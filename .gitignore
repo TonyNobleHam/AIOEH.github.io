@@ -4,3 +4,9 @@ _site/
 .sass-cache/
 vendor/
 .bundle/
+node_modules/
+.wrangler/
+.dev.vars*
+.env*
+analytics-worker/dist/
+analytics-worker/wrangler.jsonc

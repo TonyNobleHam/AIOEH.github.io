@@ -8,6 +8,8 @@
     {% feed_meta %}
     <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/analytics-consent.css' | relative_url }}">
+    <script defer src="{{ '/assets/analytics.js' | relative_url }}" data-endpoint="https://events.oehnps.co.uk/api/collect"></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
@@ -28,6 +30,9 @@
         <a href="{{ '/' | relative_url }}" class="footer-brand">{{ site.title | escape }}</a>
         <span>생각을 담고, 기록을 잇다.</span>
         <a href="https://app.pagescms.org/tonynobleham/aioeh.github.io/main/collection/posts">글쓰기 <span aria-hidden="true">↗</span></a>
+        <a href="https://insights.oehnps.co.uk/">통계 <span aria-hidden="true">↗</span></a>
+        <button class="analytics-settings-link" type="button" data-analytics-preferences>통계 수집 설정</button>
+        <a href="{{ '/privacy/' | relative_url }}">개인정보 안내</a>
         <span class="copyright">© {{ 'now' | date: '%Y' }} {{ site.title | escape }}</span>
       </footer>
     </div>
