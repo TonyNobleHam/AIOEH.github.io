@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<article class="post">
+  <header class="post-header">
+    <a class="back-link" href="{{ '/archive/' | relative_url }}"><span aria-hidden="true">←</span> 모든 글</a>
+    <div class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y.%m.%d' }}</time>
+      {% if page.categories.size > 0 %}<span class="meta-divider" aria-hidden="true">/</span><span>{{ page.categories | join: ' · ' | escape }}</span>{% endif %}
+    </div>
+    <h1>{{ page.title | escape }}</h1>
+    {% if page.description %}<p class="post-description">{{ page.description | escape }}</p>{% endif %}
+  </header>
+  <div class="prose">
+    {{ content }}
+  </div>
+  {% if page.tags.size > 0 %}
+  <ul class="post-tags" aria-label="글 태그">{% for tag in page.tags %}<li>#{{ tag | escape }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if page.previous or page.next %}
+  <nav class="post-navigation" aria-label="다른 글 읽기">
+    {% if page.previous %}<a href="{{ page.previous.url | relative_url }}"><span class="eyebrow">이전 글</span><span>{{ page.previous.title | escape }}</span></a>{% endif %}
+    {% if page.next %}<a class="next-post" href="{{ page.next.url | relative_url }}"><span class="eyebrow">다음 글</span><span>{{ page.next.title | escape }}</span></a>{% endif %}
+  </nav>
+  {% endif %}
+</article>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="{{ site.lang | default: 'ko-KR' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f8f7f3">
+    {% seo %}
+    {% feed_meta %}
+    <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="wordmark" href="{{ '/' | relative_url }}" aria-label="{{ site.title | escape }} 블로그 홈">{{ site.title | escape }}<span class="wordmark-dot" aria-hidden="true">.</span></a>
+        <nav aria-label="주 메뉴">
+          <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>홈</a>
+          <a href="{{ '/archive/' | relative_url }}"{% if page.url == '/archive/' %} aria-current="page"{% endif %}>모든 글</a>
+          <a href="{{ '/feed.xml' | relative_url }}" aria-label="RSS 피드">RSS <span aria-hidden="true">↗</span></a>
+        </nav>
+      </header>
+      <main id="main-content" tabindex="-1">
+        {{ content }}
+      </main>
+      <footer class="site-footer">
+        <a href="{{ '/' | relative_url }}" class="footer-brand">{{ site.title | escape }}</a>
+        <span>생각을 담고, 기록을 잇다.</span>
+        <span class="copyright">© {{ 'now' | date: '%Y' }} {{ site.title | escape }}</span>
+      </footer>
+    </div>
+  </body>
+</html>
