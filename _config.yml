@@ -2,8 +2,8 @@ title: AIOEH
 description: MSDS 분석 서비스와 블로그를 연결하는 AIOEH.
 lang: ko-KR
 timezone: Asia/Seoul
-url: "https://tonynobleham.github.io"
-baseurl: "/AIOEH.github.io"
+url: "https://oehnps.co.uk"
+baseurl: ""
 permalink: /blog/posts/:title/
 markdown: kramdown
 highlighter: rouge
