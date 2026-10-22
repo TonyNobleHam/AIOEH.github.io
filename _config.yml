@@ -1,16 +1,18 @@
 title: AIOEH
-description: 생각과 배움을 차곡차곡 남기는 블로그.
+description: MSDS 분석 서비스와 블로그를 연결하는 AIOEH.
 lang: ko-KR
 timezone: Asia/Seoul
 url: "https://tonynobleham.github.io"
 baseurl: "/AIOEH.github.io"
-permalink: /posts/:title/
+permalink: /blog/posts/:title/
 markdown: kramdown
 highlighter: rouge
 excerpt_separator: "<!--more-->"
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+feed:
+  path: /blog/feed.xml
 defaults:
   - scope:
       path: ""

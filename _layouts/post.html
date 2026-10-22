@@ -3,7 +3,7 @@ layout: default
 ---
 <article class="post">
   <header class="post-header">
-    <a class="back-link" href="{{ '/archive/' | relative_url }}"><span aria-hidden="true">←</span> 모든 글</a>
+    <a class="back-link" href="{{ '/blog/archive/' | relative_url }}"><span aria-hidden="true">←</span> 모든 글</a>
     <div class="post-meta">
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y.%m.%d' }}</time>
       {% if page.categories.size > 0 %}<span class="meta-divider" aria-hidden="true">/</span><span>{{ page.categories | join: ' · ' | escape }}</span>{% endif %}

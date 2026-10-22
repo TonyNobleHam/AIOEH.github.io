@@ -1,0 +1,14 @@
+- title: MSDS 분석
+  label: "01 / ANALYSIS"
+  description: 물질안전보건자료 분석 서비스를 이용합니다. 접근 권한이 있는 계정으로 로그인해 주세요.
+  action: 분석 서비스 열기
+  url: "https://msds.oehnps.co.uk/"
+  external: true
+  requires_login: true
+- title: 블로그
+  label: "02 / JOURNAL"
+  description: 배운 것, 궁금한 것, 오래 기억하고 싶은 것. 차곡차곡 쌓이는 생각과 기록을 읽습니다.
+  action: 블로그 읽기
+  url: /blog/
+  external: false
+  requires_login: false

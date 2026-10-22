@@ -2,7 +2,7 @@
 layout: default
 title: 모든 글
 description: AIOEH 블로그의 모든 기록.
-permalink: /archive/
+permalink: /blog/archive/
 ---
 <section class="archive-page" aria-labelledby="archive-title">
   <header class="page-heading">
@@ -23,6 +23,6 @@ permalink: /archive/
   </section>
   {% endfor %}
   {% else %}
-  <div class="empty-state archive-empty"><h2>아직 공개된 글이 없습니다.</h2><p>새로운 기록을 차곡차곡 모아 둘 공간입니다.</p><a class="text-link" href="{{ '/' | relative_url }}">홈으로 <span aria-hidden="true">→</span></a></div>
+  <div class="empty-state archive-empty"><h2>아직 공개된 글이 없습니다.</h2><p>새로운 기록을 차곡차곡 모아 둘 공간입니다.</p><a class="text-link" href="{{ '/blog/' | relative_url }}">블로그로 <span aria-hidden="true">→</span></a></div>
   {% endif %}
 </section>
