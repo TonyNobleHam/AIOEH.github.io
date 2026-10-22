@@ -1,0 +1,64 @@
+media:
+  - name: images
+    label: 사진
+    input: assets/images
+    output: /assets/images
+    rename: random
+    extensions: [jpg, jpeg, png, webp, gif]
+
+content:
+  - name: posts
+    label: 블로그 글
+    type: collection
+    path: _posts
+    format: yaml-frontmatter
+    subfolders: false
+    exclude: [".gitkeep"]
+    filename:
+      template: "{year}-{month}-{day}-{fields.id}.md"
+      field: false
+    operations:
+      rename: false
+    view:
+      primary: title
+      fields: [title, date, published]
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: id
+        type: uuid
+        hidden: true
+      - name: title
+        label: 제목
+        type: string
+        required: true
+      - name: description
+        label: 짧은 소개
+        type: text
+        description: 글 목록에 표시할 한두 문장입니다. 비워 두어도 됩니다.
+      - name: date
+        label: 발행일
+        type: date
+        required: true
+        description: 기본값은 오늘입니다. 미래 날짜의 글은 해당 날짜 이후 다시 저장해야 표시됩니다.
+        options:
+          format: yyyy-MM-dd
+      - name: published
+        label: 블로그에 공개
+        type: boolean
+        default: false
+        description: 켜고 저장하면 블로그에 게시됩니다. 꺼도 글과 사진은 공개 GitHub 저장소에서 볼 수 있습니다.
+      - name: body
+        label: 본문
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          media: images
+          switcher: false
+
+settings:
+  content:
+    merge: true
