@@ -8,12 +8,12 @@ GitHub Pages와 Jekyll로 운영하는 한국어 블로그입니다. 별도 프�
 
 ## Pages CMS로 쉽게 글쓰기
 
-[Pages CMS](https://app.pagescms.org/)에서 GitHub로 로그인하고 `TonyNobleHam/AIOEH.github.io` 저장소의 `main` 브랜치를 엽니다.
+[Pages CMS 글쓰기 화면](https://app.pagescms.org/tonynobleham/aioeh.github.io/main/collection/posts)을 엽니다. 블로그 맨 아래의 **글쓰기 ↗** 링크로도 들어갈 수 있습니다. 로그인이 필요하면 GitHub로 로그인하세요.
 
-1. **블로그 글 → 새 글**을 선택합니다.
+1. **Add an entry (새 글)**를 선택합니다.
 2. **제목**과 **본문**을 작성합니다. **짧은 소개**는 선택 사항이며, **발행일**은 오늘 날짜로 시작합니다.
-3. 본문 편집기의 사진 기능에서 사진을 올리거나 **사진** 메뉴에 올려 둔 파일을 선택합니다.
-4. **블로그에 공개**를 켜고 **Save / 저장**을 누릅니다. GitHub Pages가 다시 배포한 뒤 블로그에 나타납니다.
+3. 사진을 넣으려면 본문에서 새 줄에 `/`를 입력하고 **Image → Upload**를 누릅니다. 사진 파일을 고른 뒤 **Select**를 누르면 본문에 들어갑니다. **사진** 메뉴에 올려 둔 파일도 선택할 수 있습니다.
+4. **블로그에 공개**를 켜고 **Save (저장)**를 누릅니다. GitHub Pages가 다시 배포한 뒤 블로그에 나타납니다.
 
 파일 이름은 자동으로 생성되므로 직접 입력하지 않아도 됩니다. 사진은 `assets/images`에 저장되고 본문에서는 `/assets/images/사진파일` 주소로 연결됩니다. 기존 글은 **블로그 글** 목록에서 열어 수정하고 저장합니다.
 
@@ -34,6 +34,7 @@ title: "글 제목"
 description: "이 글을 소개하는 한 문장."
 categories: [기록]
 tags: [메모]
+published: true
 ---
 
 여기에 첫 문단을 씁니다.
