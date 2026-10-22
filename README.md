@@ -2,6 +2,10 @@
 
 GitHub Pages와 Jekyll로 운영하는 한국어 블로그입니다. 별도 프로그램을 설치하지 않아도 GitHub 웹 편집기에서 글을 작성할 수 있습니다.
 
+- 메인 페이지: [oehnps.co.uk](https://oehnps.co.uk/)
+- 블로그: [oehnps.co.uk/blog/](https://oehnps.co.uk/blog/)
+- MSDS 분석: [msds.oehnps.co.uk](https://msds.oehnps.co.uk/) — 접근 권한이 있는 계정으로 로그인합니다.
+
 ## 새 글 쓰기
 
 1. [새 글 작성 화면](https://github.com/TonyNobleHam/AIOEH.github.io/new/main/_posts)을 엽니다.
@@ -62,16 +66,25 @@ tags: [메모]
 
 GitHub 저장소의 **Settings → Pages → Build and deployment**는 **Deploy from a branch**, 브랜치 **main**, 폴더 **/ (root)**를 사용합니다. 글 저장 후 **Actions**에서 Pages 빌드 결과를 확인할 수 있습니다.
 
-## 도메인 연결
+## 도메인 운영 설정
 
-이 저장소는 `TonyNobleHam/AIOEH.github.io`입니다. `AIOEH.github.io`는 저장소 이름이며, 현재 계정에서 자동으로 `https://AIOEH.github.io` 주소를 만들지는 않습니다. 연결 전 블로그 임시 주소는 `https://tonynobleham.github.io/AIOEH.github.io/blog/`입니다.
+이 저장소는 `TonyNobleHam/AIOEH.github.io`입니다. `AIOEH.github.io`는 저장소 이름이며, 사이트의 공개 주소는 `oehnps.co.uk`입니다.
 
-개인 도메인 `oehnps.co.uk` 연결 시:
+- `_config.yml`: `url: "https://oehnps.co.uk"`, `baseurl: ""`
+- **Settings → Pages → Custom domain**: `oehnps.co.uk`
+- 루트 `CNAME` 파일: `oehnps.co.uk` 한 줄
+- Cloudflare DNS: 아래 네 개의 `A` 레코드, 이름은 모두 `@` (`oehnps.co.uk`), 프록시 상태는 **DNS only**
 
-1. `_config.yml`의 `url`을 `"https://oehnps.co.uk"`, `baseurl`을 `""`로 설정합니다.
-2. 저장소의 **Settings → Pages → Custom domain**에 `oehnps.co.uk`를 저장합니다. 루트 `CNAME` 파일에는 `oehnps.co.uk` 한 줄만 있어야 합니다.
-3. Cloudflare DNS에서 GitHub Pages로 연결하고 DNS 확인 및 인증서 발급이 끝나면 **Enforce HTTPS**를 켭니다.
+| 유형 | 이름 | IPv4 주소 |
+| --- | --- | --- |
+| A | @ | 185.199.108.153 |
+| A | @ | 185.199.109.153 |
+| A | @ | 185.199.110.153 |
+| A | @ | 185.199.111.153 |
 
-연결 후 홈페이지 주소는 `https://oehnps.co.uk/`, 블로그 주소는 `https://oehnps.co.uk/blog/`입니다. 도메인을 연결해도 저장소 이름은 그대로 유지합니다. `baseurl`은 연결 후에도 `/blog`가 아닌 빈 문자열로 유지하세요. 블로그 경로는 페이지와 글의 `permalink`로 지정되어 있습니다.
+`baseurl`은 빈 문자열로 유지하세요. 블로그의 `/blog/` 경로는 페이지와 글의 `permalink`로 지정되어 있습니다. 인증서 발급 및 **Enforce HTTPS** 상태는 **Settings → Pages**에서 확인할 수 있습니다.
+
+`msds.oehnps.co.uk`는 별도의 MSDS 서비스입니다. 메인 페이지에서 해당 서비스로 연결하며, MSDS의 DNS·터널·접근 권한 설정은 이 블로그와 별도로 관리합니다.
 
 기존 `TonyNobleHam.github.io` 연구실 사이트와 별개인 저장소입니다. 이 블로그를 수정해도 기존 연구실 저장소의 파일은 바뀌지 않습니다.
+
