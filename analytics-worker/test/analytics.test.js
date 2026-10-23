@@ -189,16 +189,34 @@ test('client reduction records only country/device/browser, never full UA',()=>{
 
 test('Access JWT verifies signature, issuer, audience, time and exact owner; rejects forged/expired/other-owner tokens',async()=>{
   const pair=await crypto.subtle.generateKey({name:'RSASSA-PKCS1-v1_5',modulusLength:2048,publicExponent:new Uint8Array([1,0,1]),hash:'SHA-256'},true,['sign','verify']);
-  const jwk=await crypto.subtle.exportKey('jwk',pair.publicKey);jwk.kid='test-key';jwk.alg='RS256';
+  const exported=await crypto.subtle.exportKey('jwk',pair.publicKey);
+  // Match Cloudflare's public cert endpoint: RSA n/e plus kid/use/alg, no key_ops/ext.
+  const jwk={kty:exported.kty,kid:'test-key',use:'sig',alg:'RS256',n:exported.n,e:exported.e};
   const env={ACCESS_TEAM_DOMAIN:'jwt-tests.cloudflareaccess.com',ACCESS_AUD:'0123456789abcdef',ADMIN_EMAIL:'owner@example.com'};
   const claims={iss:'https://jwt-tests.cloudflareaccess.com',aud:[env.ACCESS_AUD],exp:NOW/1000+3600,iat:NOW/1000,email:'owner@example.com'};
   const b64=x=>Buffer.from(JSON.stringify(x)).toString('base64url');
   async function token(payload=claims,header={alg:'RS256',kid:'test-key'}) {const body=`${b64(header)}.${b64(payload)}`;const sig=await crypto.subtle.sign('RSASSA-PKCS1-v1_5',pair.privateKey,new TextEncoder().encode(body));return `${body}.${Buffer.from(sig).toString('base64url')}`;}
-  const fetcher=async url=>{assert.equal(url,'https://jwt-tests.cloudflareaccess.com/cdn-cgi/access/certs');return Response.json({keys:[jwk]});};
+  const fetcher=async (url,init)=>{assert.equal(url,'https://jwt-tests.cloudflareaccess.com/cdn-cgi/access/certs');assert.equal(init.redirect,'manual');assert.ok(init.signal instanceof AbortSignal);return Response.json({keys:[jwk]});};
   const jwtRequest=jwt=>new Request('https://a/api/report',{headers:{'Cf-Access-Jwt-Assertion':jwt}});
   assert.equal(await verifyAccess(jwtRequest(await token()),env,fetcher,NOW),true);
   for(const bad of [{...claims,email:'stranger@example.com'},{...claims,aud:['wrong']},{...claims,iss:'https://attacker.com'},{...claims,exp:NOW/1000-1},{...claims,nbf:NOW/1000+100}]) await assert.rejects(verifyAccess(jwtRequest(await token(bad)),env,fetcher,NOW),{status:403});
   await assert.rejects(verifyAccess(jwtRequest(await token(claims,{alg:'none',kid:'test-key'})),env,fetcher,NOW),{status:403});
   const good=await token();await assert.rejects(verifyAccess(jwtRequest(`${good.slice(0,-8)}AAAAAAAA`),env,fetcher,NOW),{status:403});
   await assert.rejects(verifyAccess(jwtRequest(good),{...env,ADMIN_EMAIL:''},fetcher,NOW),{status:503});
+  await assert.rejects(verifyAccess(jwtRequest(await token({...claims,email:'stranger@example.com'})),{...env,AUTH_DIAGNOSTICS:'true'},fetcher,NOW),{status:403,message:'Administrator authorization failed (owner)'});
+  await assert.rejects(verifyAccess(jwtRequest(await token({...claims,aud:['wrong']})),{...env,AUTH_DIAGNOSTICS:'true'},fetcher,NOW),{status:403,message:'Administrator authorization failed (audience)'});
+  await assert.rejects(verifyAccess(jwtRequest('not-a-valid-jwt'),{...env,AUTH_DIAGNOSTICS:'true'},fetcher,NOW),{status:403,message:'Administrator authorization failed (token_decode)'});
+  const unavailableEnv={...env,ACCESS_TEAM_DOMAIN:'unavailable-jwt-tests.cloudflareaccess.com',AUTH_DIAGNOSTICS:'true'};
+  const unavailableToken=await token({...claims,iss:'https://unavailable-jwt-tests.cloudflareaccess.com'});
+  await assert.rejects(verifyAccess(jwtRequest(unavailableToken),unavailableEnv,async()=>{throw new Error('Simulated network failure');},NOW),{status:403,message:'Administrator authorization failed (key_fetch)'});
+  const redirectEnv={...env,ACCESS_TEAM_DOMAIN:'redirect-jwt-tests.cloudflareaccess.com',AUTH_DIAGNOSTICS:'true'};
+  const redirectToken=await token({...claims,iss:'https://redirect-jwt-tests.cloudflareaccess.com'});
+  await assert.rejects(verifyAccess(jwtRequest(redirectToken),redirectEnv,async()=>new Response(null,{status:302,headers:{Location:'https://attacker.example/certs'}}),NOW),{status:403,message:'Administrator authorization failed (key_response)'});
+  const nativeEnv={...env,ACCESS_TEAM_DOMAIN:'native-jwt-tests.cloudflareaccess.com'};
+  const nativeToken=await token({...claims,iss:'https://native-jwt-tests.cloudflareaccess.com'});
+  const nativeFetch=globalThis.fetch;
+  try {
+    globalThis.fetch=async function(url,init) {assert.equal(this,globalThis,'preserve native Worker global receiver');assert.equal(init.redirect,'manual');return Response.json({keys:[jwk]});};
+    assert.equal(await verifyAccess(jwtRequest(nativeToken),nativeEnv,undefined,NOW),true);
+  } finally {globalThis.fetch=nativeFetch;}
 });

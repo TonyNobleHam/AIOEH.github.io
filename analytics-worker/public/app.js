@@ -165,7 +165,8 @@
     const plotWidth = width - left - right, plotHeight = height - top - bottom;
     const rawMax = Math.max(0,...series.map(row => number(row[metric])));
     const step = rawMax ? Math.pow(10, Math.floor(Math.log10(rawMax))) : 1;
-    const max = rawMax ? Math.ceil(rawMax / step) * step : 4;
+    const roundedMax = rawMax ? Math.ceil(rawMax / step) * step : 4;
+    const max = metric === 'avgActiveSeconds' ? roundedMax : Math.max(4, Math.ceil(roundedMax / 4) * 4);
     const x = index => left + (series.length <= 1 ? plotWidth / 2 : index / (series.length - 1) * plotWidth);
     const y = value => top + plotHeight - number(value) / max * plotHeight;
     const points = series.map((row,index) => [x(index),y(row[metric])]);
